@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet the Perceptron</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            font-size: 150%;
+        }
+        section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            display: none; /* Initially hidden */
+            opacity: 0; /* Initially invisible for fade-in effect */
+            transition: opacity 0.5s ease-in; /* Fade-in effect */
+        }
+        h1, h3, h4 {
+            color: #333;
+            margin-top: 20px;
+        }
+        p, li {
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        .image-placeholder, .interactive-placeholder, .continue-button, .vocab-section, .why-it-matters, .test-your-knowledge, .faq-section {
+            text-align: left;
+        }
+        .image-placeholder img, .interactive-placeholder img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .vocab-section, .why-it-matters, .test-your-knowledge, .faq-section {
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .vocab-section {
+            background-color: #f0f8ff;
+        }
+        .vocab-section h3 {
+            color: #1e90ff;
+            font-size: 0.75em;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+        .vocab-section h4 {
+            color: #000;
+            font-size: 0.9em;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+        .vocab-term {
+            font-weight: bold;
+            color: #1e90ff;
+        }
+        .why-it-matters {
+            background-color: #ffe6f0;
+        }
+        .why-it-matters h3 {
+            color: #d81b60;
+            font-size: 0.75em;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+        .why-it-matters h4 {
+            color: #000;
+            font-size: 0.9em;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+        .test-your-knowledge {
+            background-color: #e6ffe6; /* Light green background */
+        }
+        .test-your-knowledge h3 {
+            color: #28a745; /* Dark green heading */
+            font-size: 0.75em;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+        .test-your-knowledge h4 {
+            color: #000;
+            font-size: 0.9em;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+        .test-your-knowledge p {
+            margin-bottom: 15px;
+        }
+        .check-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 15px;
+            color: #ffffff;
+            background-color: #28a745; /* Green background */
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-size: 1em;
+        }
+        .faq-section {
+            background-color: #fffbea; /* Light yellow background */
+        }
+        .faq-section h3 {
+            color: #ffcc00; /* Bright yellow heading */
+            font-size: 0.75em;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+        .faq-section h4 {
+            color: #000;
+            font-size: 0.9em;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+        .continue-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 15px;
+            color: #ffffff;
+            background-color: #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .stop-and-think {
+            background-color: #e6e6ff; /* Light blue background */
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .stop-and-think h3 {
+            color: #4b0082; /* Indigo heading */
+            font-size: 0.75em;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+        .stop-and-think h4 {
+            color: #000;
+            font-size: 0.9em;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+        .reveal-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 15px;
+            color: #ffffff;
+            background-color: #4b0082; /* Indigo background */
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <section id="section1">
+        <h1>Meet the Perceptron</h1>
+        <p>Let's start with a story. In 1957, Frank Rosenblatt was trying to create a machine that could learn like a human brain. He came up with the perceptron - an artificial neuron that could learn from examples and make decisions.</p>
+        <div class="vocab-section">
+            <h3>Build Your Vocab</h3>
+            <h4>Perceptron</h4>
+            <p>A type of artificial neuron that takes multiple inputs, applies weights to them, sums them up with a bias, and produces a binary output based on a threshold.</p>
+        </div>
+        <div class="continue-button" onclick="showNextSection(2)">Continue</div>
+    </section>
+
+    <section id="section2">
+        <p>Think about how you decide whether to take an umbrella when leaving home. You might consider:</p>
+        <ul>
+            <li>How cloudy is it? (Input 1)</li>
+            <li>What's the chance of rain? (Input 2)</li>
+            <li>Did it rain yesterday? (Input 3)</li>
+        </ul>
+        <p>You weigh each piece of information differently in your mind before making a yes/no decision. A perceptron works in exactly the same way! It takes multiple pieces of information (inputs), weighs their importance (weights), adds a personal preference (bias), and makes a yes/no decision.</p>
+        <div class="interactive-placeholder">
+            <img src="/placeholder.svg?height=300&width=600" alt="Animation shows a perceptron making an umbrella decision based on three weather inputs">
+        </div>
+        <div class="continue-button" onclick="showNextSection(3)">Continue</div>
+    </section>
+
+    <section id="section3">
+        <p>Let's break down how a perceptron thinks, step by step. Imagine our umbrella-decision perceptron:</p>
+        <ol>
+            <li>It looks at each piece of information and assigns importance:
+                <ul>
+                    <li>Cloudiness (80%) × Weight (0.6)</li>
+                    <li>Rain chance (60%) × Weight (0.7)</li>
+                    <li>Yesterday's rain (Yes=1) × Weight (0.3)</li>
+                </ul>
+            </li>
+            <li>It adds all these weighted inputs together:
+                <p>\[ 0.8 \times 0.6 + 0.6 \times 0.7 + 1 \times 0.3 = 1.11 \]</p>
+            </li>
+            <li>It adds its bias (personal preference) of -0.8:
+                <p>\[ 1.11 + (-0.8) = 0.31 \]</p>
+            </li>
+            <li>Finally, it makes its decision:
+                <ul>
+                    <li>If the result is positive (≥ 0): Take umbrella (1)</li>
+                    <li>If the result is negative (< 0): Don't take umbrella (0)</li>
+                </ul>
+            </li>
+        </ol>
+        <p>In this case, 0.31 > 0, so our perceptron says: 'Take the umbrella!'</p>
+        <div class="stop-and-think">
+            <h3>Stop and Think</h3>
+            <h4>What would happen if we changed the bias to -1.5 instead of -0.8?</h4>
+            <button class="reveal-button" onclick="revealAnswer()">Reveal Answer</button>
+            <p id="reveal-text" style="display: none;">With a bias of -1.5, our final result would be 1.11 + (-1.5) = -0.39 < 0, and the perceptron would say 'Don't take the umbrella!' This shows how the bias can dramatically affect the decision.</p>
+        </div>
+        <div class="continue-button" onclick="showNextSection(4)">Continue</div>
+    </section>
+
+    <section id="section4">
+        <p>Let's write this more formally. A perceptron follows this mathematical recipe:</p>
+        <p>\[ z = \sum_{i=1}^n w_ix_i + b \]</p>
+        <p>\[ \text{output} = \begin{cases} 1 & \text{if } z \geq 0 \\ 0 & \text{if } z < 0 \end{cases} \]</p>
+        <p>Don't let these equations intimidate you! They're just saying exactly what we did in our umbrella example, but in a more general way.</p>
+        <div class="why-it-matters">
+            <h3>Why It Matters</h3>
+            <p>This simple mathematical model is powerful enough to learn basic decision-making tasks and forms the foundation for all modern neural networks.</p>
+        </div>
+    </section>
+
+    <script>
+        // Show the first section initially
+        document.getElementById("section1").style.display = "block";
+        document.getElementById("section1").style.opacity = "1"; // Make the first section visible
+
+        // Function to show the next section with fade-in and then scroll to it
+        function showNextSection(nextSectionId) {
+            const currentButton = event.target;
+            const nextSection = document.getElementById("section" + nextSectionId);
+            
+            // Hide the clicked button
+            currentButton.style.display = "none";
+            
+            // Show the next section with a fade-in effect
+            nextSection.style.display = "block";
+            setTimeout(() => {
+                nextSection.style.opacity = "1"; // Fade in the section
+            }, 10);
+
+            // Scroll to the new section after it fades in
+            setTimeout(() => {
+                nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 500); // Delay scrolling until fade-in completes
+        }
+
+        // Function to reveal the answer in the Stop and Think section
+        function revealAnswer() {
+            const revealText = document.getElementById("reveal-text");
+            const revealButton = document.querySelector(".reveal-button");
+            
+            revealText.style.display = "block";
+            revealButton.style.display = "none";
+        }
+    </script>
+</body>
+</html>
